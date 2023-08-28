@@ -34,7 +34,7 @@ const PostData = () => {
             <div class="login-box">
 
                 <form onSubmit={(e) => SubmitData(e)}>
-                    <p id="heading">Add User</p>
+                    <p id="heading">Add New User</p>
                     <div class="user-box">
                         <input type="text"
                             id="name"
