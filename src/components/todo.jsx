@@ -62,7 +62,7 @@ const Todo = () => {
                         }
                     <br/>
                     <div className='button1'>
-                        <button className="btn" onClick={removedAll}>
+                        <button className="btn" id="btn" onClick={removedAll}>
                             <span className="btn-text-one">CHECK LIST</span>
                             <span className="btn-text-two">Remove All!</span>
                         </button>
