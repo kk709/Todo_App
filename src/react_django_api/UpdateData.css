@@ -1,8 +1,16 @@
 .orange {
     color: #ff7a01;
   }
+
+  .main-update {
+    /* position: absolute; */
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
   
   .form-container {
+    /* position: fixed; */
     max-width: 700px;
     margin: 30px;
     background-color: #001925;

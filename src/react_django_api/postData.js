@@ -1,21 +1,27 @@
 import React, { useState } from 'react'
 import Axios from 'axios';
 import './postData.css';
+import { useNavigate } from 'react-router-dom';
 
 const PostData = () => {
 
     const url = "/api/"
 
+    const navigate = useNavigate()
+
     const SubmitData = (e) => {
         e.preventDefault();
         Axios.post(url, {
             name: data.name,
-            roll: data.roll,
-            city: data.city,
+            email: data.email,
+            mobile: data.mobile,
+            phone: data.phone,
+            address: data.address,
+            designation: data.designation,
         })
             .then(res => {
                 console.log(res.data)
-                window.location.href = "/"
+                navigate('/');
             })
 
             .catch(err => {
@@ -25,12 +31,15 @@ const PostData = () => {
 
     const [data, setData] = useState({
         name: '',
-        roll: '',
-        city: '',
+        email: '',
+        mobile: '',
+        phone: '',
+        address: '',
+        designation: '',
     })
     // console.log(data)
     return (
-        <>
+        <div className='main-post'>
             <div class="login-box">
 
                 <form onSubmit={(e) => SubmitData(e)}>
@@ -44,19 +53,43 @@ const PostData = () => {
                         <label>Name</label>
                     </div>
                     <div class="user-box">
+                        <input type="email"
+                            onChange={(e) => setData({ ...data, email: e.target.value })}
+                            value={data.email}
+                            name="email" />
+                        <label>Email</label>
+                    </div>
+                    <div class="user-box">
                         <input type="number"
-                            onChange={(e) => setData({ ...data, roll: e.target.value })}
-                            value={data.roll}
-                            name="roll" />
-                        <label>Roll Number</label>
+                            id="mobile"
+                            onChange={(e) => setData({ ...data, mobile: e.target.value })}
+                            value={data.mobile}
+                            name="mobile" />
+                        <label>Mobile</label>
+                    </div>
+                    <div class="user-box">
+                        <input type="number"
+                            id="phone"
+                            onChange={(e) => setData({ ...data, phone: e.target.value })}
+                            value={data.phone}
+                            name="phone" />
+                        <label>Phone</label>
                     </div>
                     <div class="user-box">
                         <input type="text"
-                            id="city"
-                            onChange={(e) => setData({ ...data, city: e.target.value })}
-                            value={data.city}
-                            name="city" />
-                        <label>City</label>
+                            id="address"
+                            onChange={(e) => setData({ ...data, address: e.target.value })}
+                            value={data.address}
+                            name="address" />
+                        <label>Address</label>
+                    </div>
+                    <div class="user-box">
+                        <input type="text"
+                            id="designation"
+                            onChange={(e) => setData({ ...data, designation: e.target.value })}
+                            value={data.designation}
+                            name="designation" />
+                        <label>Designation</label>
                     </div>
                     <center>
                         <button type="submit" className='bt'>
@@ -66,7 +99,7 @@ const PostData = () => {
                     </center>
                 </form>
             </div>
-        </>
+        </div>
     );
 }
 
