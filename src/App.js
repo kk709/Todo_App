@@ -8,12 +8,15 @@ import PostData from './react_django_api/postData';
 import UpdateData from './react_django_api/UpdateData';
 import UserProfile from './react_django_api/UserProfile';
 import Navbar from './react_django_api/Navbar';
-import { Login, Register, Logout } from './react_django_api/Login';
+import Login from './react_django_api/Login';
+import Register from './react_django_api/Register';
+import Logout from './react_django_api/Logout';
+import Profile from './react_django_api/LoginUserProfile';
 // import Navbar from './react_django_api/Nabvbar';
 
 const PrivateRoute = () => {
 
-  const isAuthenticated = localStorage.getItem('token');
+  const isAuthenticated = localStorage.getItem('jwt');
   return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
 }
 
@@ -23,8 +26,7 @@ function App() {
   return (
     <>
       <div className="App">
-      <Navbar />
-        <header className="App-header">
+        <Navbar />
           {/* <Navbar /> */}
           <Routes>
             <Route path="/" element={<Login />} />
@@ -34,10 +36,10 @@ function App() {
               <Route path="/addItem" element={<PostData />} />
               <Route path="/update/:id" element={<UpdateData />} />
               <Route path="/profile/:id" element={<UserProfile />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/logout" element={<Logout />} />
             </Route>
-            <Route path="/logout" element={<Logout />} />
           </Routes>
-        </header>
       </div>
     </>
   );

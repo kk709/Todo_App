@@ -19,6 +19,7 @@ import {
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
+import Cookies from 'js-cookie';
 
 // interface Props {
 //     children: React.ReactNode
@@ -48,7 +49,8 @@ import { Link } from 'react-router-dom'
 export default function Navbar() {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
-    const btn = localStorage.getItem('token');
+    const btn = localStorage.getItem('jwt'); // Get the token from cookies
+    // console.log(btn)
 
     return (
         <>
@@ -89,10 +91,10 @@ export default function Navbar() {
                                     />
                                 </MenuButton>
                                 <MenuList>
-                                    <Link to="#"><MenuItem>User Profile</MenuItem></Link>
+                                    <Link to="/profile"><MenuItem>User Profile</MenuItem></Link>
                                     <Link to="#"><MenuItem>Change Password</MenuItem></Link>
                                     <MenuDivider />
-                                    <Link to="/logout"><MenuItem>Logout</MenuItem></Link>
+                                    <Link to="/logout"><MenuItem>Sign out</MenuItem></Link>
                                 </MenuList>
                             </Menu>
                         ) : (
@@ -122,7 +124,7 @@ export default function Navbar() {
                 {isOpen ? (
                     <Box pb={4} display={{ md: 'none' }}>
                         <Stack as={'nav'} spacing={4}>
-
+                        <Link to="/detail"><Box>Home</Box></Link>
                         </Stack>
                     </Box>
                 ) : null}
