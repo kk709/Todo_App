@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
-import { Button, ButtonGroup } from '@chakra-ui/react'
+// import BorderColorIcon from '@mui/icons-material/BorderColor';
+import { Button } from '@chakra-ui/react'
 // import AddIcon from '@mui/icons-material/Add';
 import Axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
+import { Link } from 'react-router-dom';
+import './pagination.css';
 import {
     Table,
     Thead,
@@ -25,10 +27,13 @@ import {
     FormControl,
     FormLabel,
     Input,
+    Select,
 
 } from '@chakra-ui/react'
 
+
 const GetData = () => {
+    const [itemsPerPage, setItemsPerPage] = useState(10); // Number of items per page
 
     // post request to add user data.
 
@@ -43,7 +48,7 @@ const GetData = () => {
 
     const url = "/api/"
 
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     const SubmitData = (e) => {
         e.preventDefault();
@@ -63,7 +68,7 @@ const GetData = () => {
             .catch(err => {
                 console.log('Error Occur Submiting data', err)
             })
-            onClose();
+        onClose();
     };
     // post request to add user data.
 
@@ -117,6 +122,18 @@ const GetData = () => {
     };
     //End delete request to delete particular user.
 
+    const [currentPage, setCurrentPage] = useState(0);
+
+    // Function to handle page change
+    const handlePageChange = ({ selected }) => {
+        setCurrentPage(selected);
+    };
+
+    // Calculate the index range for the current page
+    const startIndex = currentPage * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const displayedItems = items.slice(startIndex, endIndex);
+
     // const handleUpdate = (id) => {
     //     // console.log(items[id-1])
     //     let newItems = items.find(item => item.id === id);
@@ -136,58 +153,96 @@ const GetData = () => {
     } else {
         return (
             <>
-                <h1 style={{ textAlign: "center" }}>All Users</h1><br />
+                <div className="container-fluid mt-3">
+                    <div className="card">
+                        <div className="card-header">
+                            <div className="card-title">
+                                <div className='row'>
+                                    <div className='col-lg-6'>
+                                        <div className="d-flex justify-content-start">
+                                            <h1 style={{ textAlign: "start" }} className='mt-5'>All Users</h1>
+                                        </div>
+                                    </div>
+                                    <div className='col-lg'>
+                                        {/* modal popup open button For add new user */}
+                                        <Button colorScheme='blue' ml='4' onClick={() => {
+                                            setSize('xl')
+                                            setOverlay(<OverlayOne />)
+                                            onOpen()
+                                        }} id="button" className='mt-5 p-2'>Add user</Button>
+                                        {/* modal popup open button For add new user */}
+                                    </div>
+                                    <div className='col-lg'>
+                                        <div class="input-group mt-5" style={{ marginLeft: "30px" }}>
+                                            <select class="form-select" id="inputGroupSelect03" onChange={(e) => setItemsPerPage(parseInt(e.target.value))}
+                                                aria-label="Example select with button addon" style={{ maxWidth: "40%" }}>
+                                                <option selected>Select Page Range...</option>
+                                                <option value="20">20</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="card-body">
+                            <TableContainer>
+                                <Table variant='striped' colorScheme='teal'>
+                                    {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
+                                    <Thead>
+                                        <Tr>
+                                            <Th>#</Th>
+                                            <Th>Name</Th>
+                                            <Th>Email</Th>
+                                            <Th>Mobile</Th>
+                                            <Th>Action</Th>
+                                        </Tr>
+                                    </Thead>
+                                    <Tbody>
+                                        {displayedItems.map((item, uid) => (
+                                            <Tr key={uid}>
+                                                <Td>{item.id}</Td>
+                                                <Td>
+                                                    <Link to={`/profile/${item.id}`} style={{ textDecoration: 'none' }}>{item.name}</Link>
+                                                </Td>
+                                                <Td>{item.email}</Td>
+                                                <Td>{item.mobile}</Td>
+                                                <Td>
+                                                    <button onClick={() => handleDelete(item.id)} className="btn btn-outline-danger" toltip="Delete"><DeleteOutlineIcon /></button>
 
-                {/* modal popup open button For add new user */}
-                <Button colorScheme='blue' ml='4' onClick={() => {
-                    setSize('xl')
-                    setOverlay(<OverlayOne />)
-                    onOpen()
-                }} id="button">Add user</Button>
-                {/* modal popup open button For add new user */}
-
-                <TableContainer>
-                    <Table variant='striped' colorScheme='teal'>
-                        {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
-                        <Thead>
-                            <Tr>
-                                <Th>#</Th>
-                                <Th>Name</Th>
-                                <Th>Email</Th>
-                                <Th>Mobile</Th>
-                                <Th>Action</Th>
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-                            {items.map((item, uid) => (
-                                <Tr key={uid}>
-                                    <Td>{item.id}</Td>
-                                    <Td>
-                                        <Link to={`/profile/${item.id}`} style={{ textDecoration: 'none' }}>{item.name}</Link>
-                                    </Td>
-                                    <Td>{item.email}</Td>
-                                    <Td>{item.mobile}</Td>
-                                    <Td>
-                                        <button onClick={() => handleDelete(item.id)} className="btn btn-outline-danger" toltip="Delete"><DeleteOutlineIcon /></button>
-
-                                        <Link to={`/update/${item.id}`} className="btn btn-outline-success">
-                                            <BorderColorIcon />
-                                        </Link>
-                                    </Td>
-                                </Tr>
-                            ))}
-                        </Tbody>
-                        <Tfoot>
-                            <Tr>
-                                <Th>#</Th>
-                                <Th>Name</Th>
-                                <Th>Email</Th>
-                                <Th>Mobile</Th>
-                                <Th>Action</Th>
-                            </Tr>
-                        </Tfoot>
-                    </Table>
-                </TableContainer>
+                                                    {/* <Link to={`/update/${item.id}`} className="btn btn-outline-success">
+                                                        <BorderColorIcon />
+                                                    </Link> */}
+                                                </Td>
+                                            </Tr>
+                                        ))}
+                                    </Tbody>
+                                    <Tfoot>
+                                        <Tr>
+                                            <Th>#</Th>
+                                            <Th>Name</Th>
+                                            <Th>Email</Th>
+                                            <Th>Mobile</Th>
+                                            <Th>Action</Th>
+                                        </Tr>
+                                    </Tfoot>
+                                </Table>
+                            </TableContainer>
+                            <ReactPaginate
+                                previousLabel={'Previous'}
+                                nextLabel={'Next'}
+                                pageCount={Math.ceil(items.length / itemsPerPage)}
+                                onPageChange={handlePageChange}
+                                containerClassName={'pagination'}
+                                activeClassName={'active'}
+                                previousClassName={'previous'}
+                                nextClassName={'next'}
+                                disabledClassName={'disabled'}
+                            />
+                        </div>
+                    </div>
+                </div>
 
                 {/* modal popup For add new user */}
 
@@ -199,7 +254,7 @@ const GetData = () => {
                     {overlay}
                     <ModalOverlay />
                     <ModalContent>
-                        <ModalHeader>Create your account</ModalHeader>
+                        <ModalHeader>Create new user</ModalHeader>
                         <ModalCloseButton />
                         <ModalBody pb={6}>
                             <FormControl>

@@ -3,13 +3,44 @@ import Axios from 'axios'
 // import Logo from '../avatar.png'
 import React, { useEffect, useState } from 'react'
 import './UserProfile.css'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
+import {
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    useDisclosure,
+    Button,
+    FormControl,
+    FormLabel,
+    Input,
+
+} from '@chakra-ui/react'
 
 const UserProfile = () => {
+
+    // Add user popup model form variables.
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const [size, setSize] = React.useState('half')
+
+
+    const OverlayOne = () => (
+        <ModalOverlay
+            bg='blackAlpha.300'
+            backdropFilter='blur(10px) hue-rotate(90deg)'
+        />
+    )
+
+    const [overlay, setOverlay] = React.useState(<OverlayOne />)
+    // End Add user model form variables
 
     const [user, setUser] = useState([])
 
     const { id } = useParams();
+    // const navigate = useNavigate()
 
     useEffect(() => {
         Axios.get(`/api/${id}/`)
@@ -21,10 +52,50 @@ const UserProfile = () => {
             })
     }, [id])
 
+    //edit user detail
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [mobile, setMobile] = useState("");
+    const [phone, setPhone] = useState("");
+    const [address, setAddress] = useState("");
+    const [designation, setDesignation] = useState("");
+
+
+    useEffect(() => {
+        Axios.get(`/api/${id}/`)
+            .then((res) => {
+                const data = res.data;
+                setName(data.name);
+                setEmail(data.email);
+                setMobile(data.mobile);
+                setPhone(data.phone);
+                setAddress(data.address);
+                setDesignation(data.designation);
+            })
+            .catch((err) => {
+                console.log('Error While fetching Data', err);
+            })
+    }, [id]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const UpdateRecord = { name, email, mobile, phone, address, designation };
+
+        Axios.put(`/api/${id}/`, UpdateRecord)
+            .then(res => {
+                console.log('record Updaated Successfully', res.data)
+                window.location.href = `/profile/${id}`;
+            })
+            .catch((err) => {
+                console.log('Error while updating Record', err);
+            })
+    };
+
     return (
         <>
-            <div className="container" style={{padding: "20px", marginTop: "5%"}}>
-                <h1 style={{textAlign: "center"}}>User Profile</h1><br />
+            <div className="container" style={{ padding: "20px", marginTop: "5%" }}>
+                <h1 style={{ textAlign: "center" }}>User Profile</h1><br />
                 <div className="main-body">
                     {/* <nav aria-label="breadcrumb" className="main-breadcrumb">
                         <ol className="breadcrumb">
@@ -128,8 +199,13 @@ const UserProfile = () => {
                                         <div className="col-sm-12">
                                             {/* https://www.bootdey.com/snippets/view/profile-edit-data-and-skills
                                         target="__blank" */}
-
-                                            <Link className="btn btn-info " to="#">Edit</Link>
+                                            {/* modal popup open button For add new user */}
+                                            <Button colorScheme='blue' ml='4' onClick={() => {
+                                                setSize('xl')
+                                                setOverlay(<OverlayOne />)
+                                                onOpen()
+                                            }} className="btn btn-info">Edit</Button>
+                                            {/* modal popup open button For add new user */}
                                         </div>
                                     </div>
                                 </div>
@@ -198,6 +274,70 @@ const UserProfile = () => {
                     </div>
                 </div>
             </div>
+
+            {/* modal popup For add new user */}
+
+            <Modal
+                size={size}
+                isOpen={isOpen}
+                onClose={onClose}
+            >
+                {overlay}
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Edit user detail</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody pb={6}>
+                        <FormControl>
+                            <FormLabel>First name</FormLabel>
+                            <Input type='text' value={name} onChange={(e) => setName(e.target.value)}
+                                name="name" placeholder='First name' />
+                        </FormControl>
+
+                        <FormControl mt={4}>
+                            <FormLabel>Email</FormLabel>
+                            <Input type="email"
+                                value={email} onChange={(e) => setEmail(e.target.value)}
+                                name="email" placeholder='Email' />
+                        </FormControl>
+                        <FormControl mt={4}>
+                            <FormLabel>Mobile</FormLabel>
+                            <Input type="number"
+                                id="mobile"
+                                value={mobile} onChange={(e) => setMobile(e.target.value)}
+                                name="mobile" placeholder='Mobile' />
+                        </FormControl>
+                        <FormControl mt={4}>
+                            <FormLabel>Phone</FormLabel>
+                            <Input id="phone"
+                                value={phone} onChange={(e) => setPhone(e.target.value)}
+                                name="phone" placeholder='Phone' />
+                        </FormControl>
+                        <FormControl mt={4}>
+                            <FormLabel>Address</FormLabel>
+                            <Input type="text"
+                                id="address"
+                                value={address} onChange={(e) => setAddress(e.target.value)}
+                                name="address" placeholder='Address' />
+                        </FormControl>
+                        <FormControl mt={4}>
+                            <FormLabel>Designation</FormLabel>
+                            <Input type="text"
+                                id="designation"
+                                value={designation} onChange={(e) => setDesignation(e.target.value)}
+                                name="designation" placeholder='Designation' />
+                        </FormControl>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme='blue' mr={3} onClick={handleSubmit}>
+                            Edit
+                        </Button>
+                        <Button colorScheme='red' onClick={onClose}>Close</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+            {/* End modal popup */}
         </>
     )
 }

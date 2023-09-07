@@ -1,0 +1,35 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  /* Page Link Styles */
+  .pagination a {
+    color: #3182ce;
+    padding: 10px 15px;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Active Page Link Styles */
+  .pagination .active a {
+    background-color: #3182ce;
+    color: white;
+    border: 1px solid #3182ce;
+  }
+  
+  /* Previous and Next Button Styles */
+  .pagination .previous,
+  .pagination .next {
+    font-weight: bold;
+  }
+  
+  /* Disabled Button Styles */
+  .pagination .disabled a {
+    pointer-events: none;
+    opacity: 0.5;
+  }

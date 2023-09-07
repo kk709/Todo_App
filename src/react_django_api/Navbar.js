@@ -5,7 +5,7 @@ import {
     Flex,
     Avatar,
     HStack,
-    Text,
+    // Text,
     IconButton,
     Button,
     Menu,
@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 
 // interface Props {
 //     children: React.ReactNode
@@ -113,8 +113,8 @@ export default function Navbar() {
                                     />
                                 </MenuButton>
                                 <MenuList>
-                                    <Link to="/"><MenuItem>Login</MenuItem></Link>
-                                    <Link to="/@"><MenuItem>Register</MenuItem></Link>
+                                    <Link to="/login"><MenuItem>Login</MenuItem></Link>
+                                    <Link to="/register"><MenuItem>Register</MenuItem></Link>
                                 </MenuList>
                             </Menu>
                         )}

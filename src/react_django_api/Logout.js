@@ -24,7 +24,7 @@ const Logout = () => {
     };
 
     return (
-        <main>
+        <div className="container" style={{minHeight: "800px", maxHeight: "800px"}}>
 
             <div className="auth-form Box p-4 mt-3">
                 <form data-turbo="false" onSubmit={handleLogout} accept-charset="UTF-8" method="post"><input type="hidden" name="authenticity_token" value="DHl_VqkDPRBMH7NvIuPoSOKI2mEu9SULyRWO98AQPj3rfKxs7rccVJqJ29ZVgvbfvTHo6dfQorhLZNbx8o9zYA" />
@@ -33,7 +33,7 @@ const Logout = () => {
                 </form>
             </div>
 
-        </main>
+        </div>
     );
 };
 

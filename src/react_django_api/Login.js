@@ -1,27 +1,27 @@
 // 'use client'
 
-import {
-    Button,
-    Checkbox,
-    Flex,
-    Text,
-    FormControl,
-    FormLabel,
-    Heading,
-    Input,
-    Stack,
-    Image,
-} from '@chakra-ui/react'
-import Axios from 'axios'
-import { useEffect, useState } from 'react'
+// import {
+//     Button,
+//     Checkbox,
+//     Flex,
+//     Text,
+//     FormControl,
+//     FormLabel,
+//     Heading,
+//     Input,
+//     Stack,
+//     Image,
+// } from '@chakra-ui/react'
+// import Axios from 'axios'
+import { useState } from 'react'
 
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import './Login.css';
 
 
 const Login = () => {
 
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -122,7 +122,7 @@ const Login = () => {
                             <div className="text-center text-lg-start mt-4 pt-2">
                                 <button type="submit" className="btn btn-primary btn-lg"
                                     style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }}>Login</button>
-                                <p className="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <Link to="/@"
+                                <p className="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <Link to="/register"
                                     className="link-danger">Register</Link></p>
                             </div>
 

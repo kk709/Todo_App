@@ -1,3 +1,12 @@
+/* .ft {
+  flex-grow: 1;
+  min-height: calc(100vh - 67px); Calculate minimum height to prevent overlapping
+  padding: 20px; Adjust this as needed for your content
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+} */
+
 .form-signin {
   max-width: 330px;
   padding: 1rem;
